@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import './App.css';
 import axios from "axios";
-import FilterBar from "./components/FilterBar";
+import FilterBar from "./components/FilterBar.js";
+import EventItem from "./components/EventItem.js";
 import { formatApiResponse } from "./formatApiResponse.js";
 
 function App() {
@@ -23,14 +24,17 @@ function App() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-3 bg-light">
           <FilterBar
            
           />
         </div>
+        
         <div className="col-sm-9">
           <div className="row mt-5">
-            
+            {allData && allData.map((item, index) => (
+              <EventItem item={item} key={index} />
+            ))}
           </div>
         </div>
       </div>
