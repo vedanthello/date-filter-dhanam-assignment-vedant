@@ -31,7 +31,7 @@ function App() {
 
   }, []);
 
-  const implementFiltration = (dateFilterType, from, to) => {
+  const implementFiltration = (dateFilterType, startDate, endDate) => {
 
     if (dateFilterType === "yesterday") {
       
@@ -60,6 +60,28 @@ function App() {
       });
       setFilteredData(fData);
 
+    } else if (dateFilterType === "custom-date-range") {
+      
+      let fData = allData;
+
+      // fiter based on startDate
+      if (startDate) {
+        fData = fData.filter(item => {
+          return moment(startDate).isSameOrBefore(item.date);
+        });
+      }
+
+      // fiter based on endDate
+      if (endDate) {
+        fData = fData.filter(item => {
+          return moment(item.date).isSameOrBefore(endDate);
+        });
+      }
+
+      setFilteredData(fData);
+
+    } else if (dateFilterType === "") {
+      setFilteredData(allData);
     }
   };
 

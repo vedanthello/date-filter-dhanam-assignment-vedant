@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";  
+import "react-datepicker/dist/react-datepicker.css";  
 
 const FilterBar = ({ implementFiltration }) => {
 
   const [dateFilterType, setDateFilterType] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const handleInputChange = event => {
     const target = event.target;
@@ -10,9 +14,14 @@ const FilterBar = ({ implementFiltration }) => {
     if (target.id === "date-filter-type") {
       setDateFilterType(target.value);
       implementFiltration(target.value);
-
     }
   };
+
+  useEffect(() => {
+    if (dateFilterType === "custom-date-range") {
+      implementFiltration(dateFilterType, startDate, endDate);
+    }
+  }, [startDate, endDate]);
 
   return (
 
@@ -41,21 +50,25 @@ const FilterBar = ({ implementFiltration }) => {
         <>
           <div className="col-sm-12 my-2">
             <label htmlFor="start-date">From</label>
-            <input
-              type="date"
-              className="form-control"
-              id="start-date"
-            // onChange={handleInput("from")}
+            <DatePicker
+              dateFormat="yyyy/MM/dd"
+              placeholderText='YYYY-MM-DD'
+              selected={startDate}
+              isClearable
+              showYearDropdown
+              onChange={date => setStartDate(date)}
             />
           </div>
 
           <div className="col-sm-12 my-2">
             <label htmlFor="end-date">To</label>
-            <input
-              type="date"
-              className="form-control"
-              id="end-date"
-            // onChange={handleInput("to")}
+            <DatePicker
+              dateFormat="yyyy/MM/dd"
+              placeholderText='YYYY-MM-DD'
+              selected={endDate}
+              isClearable
+              showYearDropdown
+              onChange={date => setEndDate(date)}
             />
           </div>
         </>
